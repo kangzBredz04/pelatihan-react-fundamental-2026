@@ -1,21 +1,30 @@
-const JobCard = () => {
+const JobCard = ({
+    title,
+    company,
+    location,
+    salary,
+}) => {
     return (
-        <div>
-            <h3>Frontend Developer</h3>
+        <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition duration-300">
+            <h2 className="text-2xl font-bold text-gray-800">
+                {title}
+            </h2>
 
-            <p>
-                <strong>Perusahaan :</strong> PT ABC Indonesia
+            <p className="text-gray-600 mt-2">
+                {company}
             </p>
 
-            <p>
-                <strong>Lokasi :</strong> Bandung
+            <p className="text-gray-500">
+                📍 {location}
             </p>
 
-            <p>
-                <strong>Gaji :</strong> Rp8.000.000
+            <p className="text-green-600 font-semibold mt-2">
+                💰 {salary}
             </p>
 
-            <hr />
+            <button className="mt-5 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300">
+                Lihat Detail
+            </button>
         </div>
     );
 };
