@@ -1,11 +1,22 @@
+import { useState } from "react";
+
 const JobCard = ({
     title,
     company,
     location,
     salary,
+    status,
 }) => {
+
+    const [isApplied, setIsApplied] = useState(false);
+
+    const handleApply = () => {
+        setIsApplied(true);
+    };
+
     return (
         <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition duration-300">
+
             <h2 className="text-2xl font-bold text-gray-800">
                 {title}
             </h2>
@@ -22,9 +33,25 @@ const JobCard = ({
                 💰 {salary}
             </p>
 
-            <button className="mt-5 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300">
-                Lihat Detail
+            <p
+                className={`mt-2 font-semibold ${status
+                    ? "text-green-600"
+                    : "text-red-600"
+                    }`}
+            >
+                Status: {status ? "Open" : "Closed"}
+            </p>
+
+            <button
+                onClick={handleApply}
+            >
+                {
+                    isApplied
+                        ? "Sudah Dilamar"
+                        : "Lamar Sekarang"
+                }
             </button>
+
         </div>
     );
 };

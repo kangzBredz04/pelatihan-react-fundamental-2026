@@ -1,28 +1,20 @@
 import JobCard from "./JobCard";
 
-const JobList = () => {
+const JobList = ({ jobs }) => {
     return (
-        <section>
-            <h2>Daftar Lowongan Kerja</h2>
-            <JobCard
-                title="Frontend Developer"
-                company="PT ABC Indonesia"
-                location="Bandung"
-                salary="Rp8.000.000"
-            />
-            <JobCard
-                title="Backend Developer"
-                company="PT DEF Indonesia"
-                location="Jakarta"
-                salary="Rp9.000.000"
-            />
-            <JobCard
-                title="Fullstack Developer"
-                company="PT GHI Indonesia"
-                location="Surabaya"
-                salary="Rp10.000.000"
-            />
-
+        <section className="space-y-5">
+            {
+                jobs.map((job) => (
+                    <JobCard
+                        key={job.id}
+                        title={job.title}
+                        company={job.company}
+                        location={job.location}
+                        salary={job.salary}
+                        status={job.status}
+                    />
+                ))
+            }
         </section>
     );
 };
