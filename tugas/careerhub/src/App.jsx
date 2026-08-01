@@ -38,7 +38,7 @@ function App() {
       <Header />
       <Hero />
       <JobList jobs={jobs} />
-      
+
       <Footer />
     </>
   );
