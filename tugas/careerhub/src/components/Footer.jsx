@@ -1,9 +1,7 @@
+import React from "react";
+
 const Footer = () => {
-    return (
-        <footer className="footer">
-            © 2026 CareerHub | React Fundamental
-        </footer>
-    );
+  return <div>Footer</div>;
 };
 
 export default Footer;

@@ -1,93 +1,32 @@
-import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Header from "./components/Header";
-import Hero from "./components/Hero";
-import JobList from "./components/JobList";
+
+import Home from "./pages/Home";
+import Jobs from "./pages/Jobs";
+import Profile from "./pages/Profile";
+import JobDetail from "./pages/JobDetail";
 import Footer from "./components/Footer";
-import UserProvider from "./context/UserContext";
-import Profile from "./components/Profile";
 
-const jobs = [
-  {
-    id: 1,
-    jobName: "Fullstack Developer",
-    company: "PT. ABC Indonesia",
-    location: "Bandung",
-    salary: "Rp. 7.000.000",
-    status: true,
-  },
-  {
-    id: 2,
-    jobName: "Backend Developer",
-    company: "PT. DEF Indonesia",
-    location: "Jakarta",
-    salary: "Rp. 8.000.000",
-    status: false,
-  },
-  {
-    id: 3,
-    jobName: "Frontend Developer",
-    company: "PT. GHI Indonesia",
-    location: "Medan",
-    salary: "Rp. 5.000.000",
-    status: true,
-  },
-  {
-    id: 4,
-    jobName: "Data Analyst",
-    company: "PT. ABC Indonesia",
-    location: "Bandung",
-    salary: "Rp. 6.000.000",
-    status: true,
-  },
-  {
-    id: 5,
-    jobName: "Frontend Developer",
-    company: "PT. GHI Indonesia",
-    location: "Medan",
-    salary: "Rp. 5.000.000",
-    status: true,
-  },
-  {
-    id: 6,
-    jobName: "Data Analyst",
-    company: "PT. ABC Indonesia",
-    location: "Bandung",
-    salary: "Rp. 6.000.000",
-    status: true,
-  },
-  {
-    id: 7,
-    jobName: "Data Analyst",
-    company: "PT. ABC Indonesia",
-    location: "Bandung",
-    salary: "Rp. 6.000.000",
-    status: true,
-  },
-];
-
-function App() {
+const App = () => {
   return (
-    <UserProvider>
+    <BrowserRouter>
       <Header />
 
-      {/* <main>
-        <JobList jobs={jobs} />
-      </main> */}
+      <main className="max-w-7xl mx-auto px-6 py-8">
+        <Routes>
+          <Route path="/" element={<Home />} />
 
-      <Profile />
-    </UserProvider>
+          <Route path="/jobs" element={<Jobs />} />
+
+          <Route path="/profile" element={<Profile />} />
+
+          <Route path="/jobs/:id" element={<JobDetail />} />
+        </Routes>
+      </main>
+      <Footer />
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
-
-{
-  /* <>
-  <Header />
-  <Hero />
-  <JobList jobs={jobs} />
-
-  <Footer />
-</>; */
-}

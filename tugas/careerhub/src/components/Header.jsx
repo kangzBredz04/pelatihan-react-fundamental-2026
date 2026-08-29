@@ -1,14 +1,21 @@
-import { useContext } from "react";
-import { UserContext } from "../context/UserContext";
+import { Link } from "react-router-dom";
 
 const Header = () => {
-  const { user } = useContext(UserContext);
-
   return (
-    <header>
-      <h1>CareerHub</h1>
+    <header className="border-b">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between">
+        <Link to="/" className="text-2xl font-bold">
+          CareerHub
+        </Link>
 
-      <p>Halo, {user.name}</p>
+        <nav className="flex gap-6">
+          <Link to="/">Home</Link>
+
+          <Link to="/jobs">Lowongan Kerja</Link>
+
+          <Link to="/profile">Profile</Link>
+        </nav>
+      </div>
     </header>
   );
 };
