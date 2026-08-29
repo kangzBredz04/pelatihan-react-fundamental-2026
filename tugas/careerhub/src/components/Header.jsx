@@ -1,10 +1,16 @@
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
+
 const Header = () => {
-    return (
-        <header className="header">
-            <h1>CareerHub</h1>
-            <p>Find Your Dream Job</p>
-        </header>
-    );
+  const { user } = useContext(UserContext);
+
+  return (
+    <header>
+      <h1>CareerHub</h1>
+
+      <p>Halo, {user.name}</p>
+    </header>
+  );
 };
 
 export default Header;
