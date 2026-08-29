@@ -1,104 +1,315 @@
-// import { jobs } from "../job";
-import JobCard from "./JobCard";
-// import { jobs } from "../job.js";
 import { useState } from "react";
 
-// const jobs = [
-//     {
-//         id: 1,
-//         jobName: "Fullstack Developer",
-//         company: "PT. ABC Indonesia",
-//         location: "Bandung",
-//         salary: "Rp. 8.000.000",
-//         status: true
-//     },
-//     {
-//         id: 2,
-//         jobName: "Backend Developer",
-//         company: "PT. DEF Indonesia",
-//         location: "Jakarta",
-//         salary: "Rp. 8.000.000",
-//         status: false
-//     },
-//     {
-//         id: 3,
-//         jobName: "Frontend Developer",
-//         company: "PT. GHI Indonesia",
-//         location: "Medan",
-//         salary: "Rp. 8.000.000",
-//         status: true
-//     }
-// ];
+const jobs = [
+    {
+        id: 1,
+        jobName: "Fullstack Developer",
+        company: "PT. ABC Indonesia",
+        location: "Bandung",
+        salary: "Rp. 8.000.000",
+        status: true
+    },
+    {
+        id: 2,
+        jobName: "Backend Developer",
+        company: "PT. DEF Indonesia",
+        location: "Jakarta",
+        salary: "Rp. 8.000.000",
+        status: false
+    },
+    {
+        id: 3,
+        jobName: "Frontend Developer",
+        company: "PT. GHI Indonesia",
+        location: "Medan",
+        salary: "Rp. 8.000.000",
+        status: true
+    }
+];
+
+
+const getSalaryValue = (salary) => {
+    return Number(
+        salary
+            .replace("Rp. ", "")
+            .replaceAll(".", "")
+    );
+};
 
 const JobList = ({ jobs }) => {
-    console.log(jobs);
 
-    // onClick handler for job card
-    const handleJobClick = (jobId) => {
-        console.log(`Clicked on job with ID: ${jobId}`);
-        alert(`Clicked on job with ID: ${jobId}`);
-    }
+    const [search, setSearch] = useState("");
+    const [location, setLocation] = useState("Semua");
+    const [status, setStatus] = useState("Semua");
+    const [sortBy, setSortBy] = useState("default");
 
-    // onChange handler for search input
-    const handleSearch = (event) => {
-        const searchTerm = event.target.value.toLowerCase();
-        const filteredJobs = jobs.filter((job) =>
-            job.jobName.toLowerCase().includes(searchTerm) ||
-            job.company.toLowerCase().includes(searchTerm) ||
-            job.location.toLowerCase().includes(searchTerm)
+    const filteredJobs = jobs.filter((job) => {
+
+        const matchesSearch =
+            job.jobName
+                .toLowerCase()
+                .includes(search.toLowerCase());
+
+        // jika mau seacrh beberapa data
+        // const keyword = search.toLowerCase();
+        // const matchesSearch =
+        //     job.jobName.toLowerCase().includes(keyword) ||
+        //     job.company.toLowerCase().includes(keyword) ||
+        //     job.location.toLowerCase().includes(keyword);
+
+        const matchesLocation =
+            location === "Semua" ||
+            job.location === location;
+
+        const matchesStatus =
+            status === "Semua" ||
+            (status === "Tersedia" &&
+                job.status === true) ||
+            (status === "Ditutup" &&
+                job.status === false);
+
+        return (
+            matchesSearch &&
+            matchesLocation &&
+            matchesStatus
         );
-        console.log(filteredJobs);
+    });
+
+    const sortedJobs = [...filteredJobs];
+
+    if (sortBy === "name-asc") {
+        sortedJobs.sort(
+            (a, b) =>
+                a.jobName.localeCompare(b.jobName)
+        );
     }
 
-    // onSubmit handler for search form
-    const handleSearchSubmit = (event) => {
-        event.preventDefault();
-        console.log("Search submitted");
+    if (sortBy === "name-desc") {
+        sortedJobs.sort(
+            (a, b) =>
+                b.jobName.localeCompare(a.jobName)
+        );
     }
 
-    const [isApplied, setIsApplied] = useState(false);
-    const handleApplyClick = () => {
-        setIsApplied(!isApplied);
-        alert("Anda telah melamar pekerjaan ini!");
+    if (sortBy === "salary-low") {
+        sortedJobs.sort(
+            (a, b) =>
+                getSalaryValue(a.salary) -
+                getSalaryValue(b.salary)
+        );
     }
+
+    if (sortBy === "salary-high") {
+        sortedJobs.sort(
+            (a, b) =>
+                getSalaryValue(b.salary) -
+                getSalaryValue(a.salary)
+        );
+    }
+
+    const jobsPerPage = 2;
+
+    const [currentPage, setCurrentPage] = useState(1);
 
     return (
-        <section className="job-list">
+        <section className="space-y-6">
 
-            <h2>Daftar Lowongan Kerja</h2>
+            <div className="
+                flex
+                flex-col
+                md:flex-row
+                gap-4
+            ">
 
-            <form onSubmit={handleSearchSubmit}>
                 <input
                     type="text"
-                    placeholder="Cari lowongan kerja..."
-                    onChange={handleSearch}
-                    className="border border-gray-300 rounded-md p-2 mb-4 w-full"
+                    placeholder="Cari lowongan..."
+                    value={search}
+                    onChange={(event) =>
+                        setSearch(event.target.value)
+                    }
+                    className="
+                        flex-1
+                        border
+                        rounded-xl
+                        px-4
+                        py-3
+                    "
                 />
-                <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md">
-                    Cari
-                </button>
-            </form>
 
-            <div>
+                <select
+                    value={location}
+                    onChange={(event) =>
+                        setLocation(event.target.value)
+                    }
+                    className="
+                        border
+                        rounded-xl
+                        px-4
+                        py-3
+                    "
+                >
+                    <option value="Semua">
+                        Semua Lokasi
+                    </option>
 
-                {jobs.map((job) => (
+                    <option value="Bandung">
+                        Bandung
+                    </option>
 
-                    <div key={job.id} className="bg-blue-200 my-2">
-                        <h3>{job.jobName}</h3>
-                        <p className="text-red-600"><strong>Perusahaan :</strong> {job.company}</p>
-                        <p><strong>Lokasi :</strong> {job.location}</p>
-                        <p><strong>Gaji :</strong> {job.salary}</p>
-                        <p className={job.status ? "text-green-600 font-semibold" : "text-red-600 font-semibold"}>{job.status ? "Open" : "Closed"}</p>
+                    <option value="Jakarta">
+                        Jakarta
+                    </option>
 
-                        <button onClick={handleApplyClick}>
-                            {isApplied ? "Sudah Melamar" : "Lamar Sekarang"}
-                        </button>
+                    <option value="Medan">
+                        Medan
+                    </option>
+                </select>
 
-                        <button className="font-extrabold" onClick={() => handleJobClick(job.id)}>
-                            Lihat Detail
-                        </button>
+                <select
+                    value={status}
+                    onChange={(event) =>
+                        setStatus(event.target.value)
+                    }
+                    className="
+                        border
+                        rounded-xl
+                        px-4
+                        py-3
+                    "
+                >
+                    <option value="Semua">
+                        Semua Status
+                    </option>
+
+                    <option value="Tersedia">
+                        Tersedia
+                    </option>
+
+                    <option value="Ditutup">
+                        Ditutup
+                    </option>
+                </select>
+
+                <select
+                    value={sortBy}
+                    onChange={(event) =>
+                        setSortBy(event.target.value)
+                    }
+                    className="
+                        border
+                        rounded-xl
+                        px-4
+                        py-3
+                    "
+                >
+                    <option value="default">
+                        Urutan Default
+                    </option>
+
+                    <option value="name-asc">
+                        Nama A-Z
+                    </option>
+
+                    <option value="name-desc">
+                        Nama Z-A
+                    </option>
+
+                    <option value="salary-low">
+                        Gaji Terendah
+                    </option>
+
+                    <option value="salary-high">
+                        Gaji Tertinggi
+                    </option>
+                </select>
+
+            </div>
+
+            <p className="text-gray-500">
+                Menampilkan {sortedJobs.length} lowongan
+            </p>
+
+            <div className="
+                grid
+                grid-cols-1
+                md:grid-cols-2
+                lg:grid-cols-3
+                gap-6
+            ">
+
+                {sortedJobs.length > 0 ? (
+
+                    sortedJobs.map((job) => (
+
+                        <div
+                            key={job.id}
+                            className="
+                                bg-white
+                                rounded-2xl
+                                shadow-md
+                                p-6
+                                hover:shadow-xl
+                                transition
+                            "
+                        >
+
+                            <h3 className="
+                                text-xl
+                                font-bold
+                            ">
+                                {job.jobName}
+                            </h3>
+
+                            <p className="
+                                text-gray-600
+                                mt-2
+                            ">
+                                {job.company}
+                            </p>
+
+                            <p className="
+                                text-gray-500
+                                mt-1
+                            ">
+                                📍 {job.location}
+                            </p>
+
+                            <p className="
+                                font-semibold
+                                text-blue-600
+                                mt-4
+                            ">
+                                {job.salary}
+                            </p>
+
+                            <p className="mt-2">
+                                {job.status
+                                    ? "🟢 Lowongan Tersedia"
+                                    : "🔴 Lowongan Ditutup"
+                                }
+                            </p>
+
+                        </div>
+
+                    ))
+
+                ) : (
+
+                    <div className="
+                        col-span-full
+                        text-center
+                        py-12
+                    ">
+                        <p className="
+                            text-gray-500
+                            text-lg
+                        ">
+                            Lowongan tidak ditemukan.
+                        </p>
                     </div>
-                ))}
+
+                )}
 
             </div>
 
